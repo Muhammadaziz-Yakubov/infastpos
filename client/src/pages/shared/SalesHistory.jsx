@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { SearchIcon, EyeIcon, PrinterIcon, CalendarIcon, XIcon } from '@heroicons/react/outline';
+import { SearchIcon, EyeIcon, PrinterIcon, CalendarIcon, XIcon, ShoppingBagIcon } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
 import api from '../../api/axios';
 import { format } from 'date-fns';

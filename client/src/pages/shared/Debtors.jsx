@@ -15,7 +15,6 @@ import { toast } from 'react-hot-toast';
 import { format } from 'date-fns';
 
 const Debtors = () => {
-  const { t } = useTranslation();
   const [debtors, setDebtors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,7 +29,7 @@ const Debtors = () => {
       const { data } = await api.get('/sales/debtors');
       setDebtors(data);
     } catch (error) {
-      toast.error(t('LoadingError'));
+      toast.error('Ma\'lumotlarni yuklashda xatolik');
     } finally {
       setLoading(false);
     }
@@ -45,7 +44,7 @@ const Debtors = () => {
       setSelectedDebtor(null);
       fetchDebtors();
     } catch (error) {
-      toast.error(error.response?.data?.message || t('SaleError'));
+      toast.error(error.response?.data?.message || 'Qarz yopishda xatolik yuz berdi');
     }
   };
 

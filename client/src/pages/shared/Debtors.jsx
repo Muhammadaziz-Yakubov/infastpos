@@ -11,10 +11,11 @@ import {
 } from '@heroicons/react/outline';
 import { useTranslation } from 'react-i18next';
 import api from '../../api/axios';
-import { toast } from 'react-hot-toast';
+import { toast } from 'react-hot-toast';      
 import { format } from 'date-fns';
 
 const Debtors = () => {
+  const { t } = useTranslation();
   const [debtors, setDebtors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');

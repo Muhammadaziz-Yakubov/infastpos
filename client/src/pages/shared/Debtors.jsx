@@ -37,11 +37,11 @@ const Debtors = () => {
   };
 
   const handlePayDebt = async (phone) => {
-    if (!window.confirm(t('PayDebtConfirm') || 'Qarzni yopishga aminmisiz?')) return;
+    if (!window.confirm('Qarzni yopishga aminmisiz?')) return;
     
     try {
       await api.post(`/sales/debtors/${encodeURIComponent(phone)}/pay`);
-      toast.success(t('DebtPaidSuccess') || 'Qarz muvaffaqiyatli yopildi');
+      toast.success('Qarz muvaffaqiyatli yopildi');
       setSelectedDebtor(null);
       fetchDebtors();
     } catch (error) {

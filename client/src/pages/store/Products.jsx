@@ -445,13 +445,13 @@ const Products = () => {
                 <button 
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-10 py-4.5 text-slate-400 dark:text-slate-500 font-black uppercase text-[11px] tracking-[0.2em] hover:text-slate-700 dark:hover:text-white transition-all"
+                  className="px-10 py-4 text-slate-400 dark:text-slate-500 font-black uppercase text-[11px] tracking-[0.2em] hover:text-slate-700 dark:hover:text-white transition-all"
                 >
                   {t('Cancel')}
                 </button>
                 <button 
                   type="submit"
-                  className="btn-primary px-16 py-4.5"
+                  className="btn-primary px-16 py-4"
                 >
                   {t('Save')}
                 </button>

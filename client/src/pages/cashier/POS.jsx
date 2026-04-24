@@ -44,6 +44,8 @@ const POS = () => {
   const [isDebtorModalOpen, setIsDebtorModalOpen] = useState(false);
   const [debtorInfo, setDebtorInfo] = useState({ name: '', phone: '' });
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const barcodeBuffer = useRef('');
+  const lastKeyTime = useRef(0);
 
   const searchInputRef = useRef(null);
   const categoryRef = useRef(null);
@@ -84,6 +86,39 @@ const POS = () => {
     fetchData();
     searchInputRef.current?.focus();
     const handleKeyDown = (e) => {
+      // Barcode Scanner Logic (usually fast typing + Enter)
+      const currentTime = Date.now();
+      
+      // If time between keys is small (< 50ms), it's likely a scanner
+      const isFastTyping = currentTime - lastKeyTime.current < 50;
+      
+      if (e.key === 'Enter') {
+        if (barcodeBuffer.current.length > 3) { // Minimum barcode length
+          const code = barcodeBuffer.current;
+          const exactMatch = products.find((p) => p.barcode === code);
+          if (exactMatch) {
+            handleAddToCart(exactMatch);
+            toast.success(`${exactMatch.name} ${t('AddedToCart') || 'savatga qo\'shildi'}`);
+            barcodeBuffer.current = '';
+            setSearchQuery(''); // Clear search if any
+            return;
+          }
+        }
+        barcodeBuffer.current = '';
+      } else if (e.key.length === 1 && !e.ctrlKey && !e.altKey) {
+        // Only collect if not in an input field (unless it's the search input)
+        const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA';
+        const isSearchInput = e.target === searchInputRef.current;
+        
+        if (!isInput || isSearchInput) {
+          if (!isFastTyping) barcodeBuffer.current = ''; // Reset if slow
+          barcodeBuffer.current += e.key;
+        }
+      }
+      
+      lastKeyTime.current = currentTime;
+
+      // Regular Hotkeys
       if (e.key === 'F1') { e.preventDefault(); searchInputRef.current?.focus(); }
       if (e.key === 'F2') { e.preventDefault(); handleSale(); }
       if (e.key === 'Escape') { clearCart(); }
@@ -488,7 +523,7 @@ const POS = () => {
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" checked={printReceipt} onChange={() => setPrintReceipt(!printReceipt)} className="sr-only peer" />
-                <div className="w-12 h-6.5 bg-slate-200 dark:bg-slate-800 rounded-full peer peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5.5 after:w-5.5 after:transition-all peer-checked:after:translate-x-5.5 shadow-inner" />
+                <div className="w-11 h-6 bg-slate-200 dark:bg-slate-800 rounded-full peer peer-checked:bg-indigo-600 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5 shadow-inner" />
               </label>
             </div>
 
@@ -517,7 +552,7 @@ const POS = () => {
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" checked={isDebt} onChange={() => setIsDebt(!isDebt)} className="sr-only peer" />
-                <div className="w-12 h-6.5 bg-slate-200 dark:bg-slate-800 rounded-full peer peer-checked:bg-rose-500 after:content-[''] after:absolute after:top-[3px] after:left-[3px] after:bg-white after:rounded-full after:h-5.5 after:w-5.5 after:transition-all peer-checked:after:translate-x-5.5 shadow-inner" />
+                <div className="w-11 h-6 bg-slate-200 dark:bg-slate-800 rounded-full peer peer-checked:bg-rose-500 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5 shadow-inner" />
               </label>
             </div>
 
@@ -580,8 +615,8 @@ const POS = () => {
                 </div>
               </div>
               <div className="px-10 pb-10 flex gap-4">
-                <button onClick={() => setIsReceiptModalOpen(false)} className="flex-1 py-4.5 bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-slate-600 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-100 dark:hover:bg-white/10 transition-all">{t('Close')}</button>
-                <button onClick={() => window.print()} className="btn-primary flex-1 py-4.5 text-[11px]"><PrinterIcon className="h-5 w-5" />{t('Print')}</button>
+                <button onClick={() => setIsReceiptModalOpen(false)} className="flex-1 py-4 bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-slate-600 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-100 dark:hover:bg-white/10 transition-all">{t('Close')}</button>
+                <button onClick={() => window.print()} className="btn-primary flex-1 py-4 text-[11px]"><PrinterIcon className="h-5 w-5" />{t('Print')}</button>
               </div>
             </div>
           </div>
@@ -627,8 +662,8 @@ const POS = () => {
                   </div>
 
                   <div className="pt-6 flex gap-4">
-                    <button type="button" onClick={() => setIsDebtorModalOpen(false)} className="flex-1 py-4.5 bg-slate-50 dark:bg-white/5 text-slate-400 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-100 transition-all">{t('Cancel')}</button>
-                    <button type="submit" className="btn-primary flex-[1.5] py-4.5 bg-rose-500 hover:bg-rose-600 shadow-rose-500/30 border-none">{t('FinishSale')}</button>
+                    <button type="button" onClick={() => setIsDebtorModalOpen(false)} className="flex-1 py-4 bg-slate-50 dark:bg-white/5 text-slate-400 text-[11px] font-black uppercase tracking-widest rounded-2xl hover:bg-slate-100 transition-all">{t('Cancel')}</button>
+                    <button type="submit" className="btn-primary flex-[1.5] py-4 bg-rose-500 hover:bg-rose-600 shadow-rose-500/30 border-none">{t('FinishSale')}</button>
                   </div>
                 </form>
               </div>

@@ -237,7 +237,13 @@ const resources = {
       "Password": "Parol",
       "SubscriptionHistoryDesc": "Tizimdagi barcha to'lovlar va obuna faollashuvlari",
       "StartDate": "Boshlanish sanasi",
-      "Plan": "Reja"
+      "Plan": "Reja",
+      "TotalStores": "Jami do'konlar",
+      "ActiveSubscriptions": "Faol obunalar",
+      "TotalRevenue": "Jami tushum",
+      "StoreGrowthChart": "Do'konlar o'sish grafigi",
+      "RecentAdded": "Yaqinda qo'shilganlar",
+      "AdminDashboardDesc": "Tizimning umumiy o'sish va faollik ko'rsatkichlari"
     }
   },
   ru: {
@@ -474,7 +480,13 @@ const resources = {
       "Password": "Пароль",
       "SubscriptionHistoryDesc": "Все платежи и активации подписок в системе",
       "StartDate": "Дата начала",
-      "Plan": "План"
+      "Plan": "План",
+      "TotalStores": "Всего магазинов",
+      "ActiveSubscriptions": "Активные подписки",
+      "TotalRevenue": "Общая выручка",
+      "StoreGrowthChart": "График роста магазинов",
+      "RecentAdded": "Недавно добавленные",
+      "AdminDashboardDesc": "Общие показатели роста и активности системы"
     }
   },
   en: {
@@ -711,7 +723,13 @@ const resources = {
       "Password": "Password",
       "SubscriptionHistoryDesc": "All payments and subscription activations in the system",
       "StartDate": "Start Date",
-      "Plan": "Plan"
+      "Plan": "Plan",
+      "TotalStores": "Total Stores",
+      "ActiveSubscriptions": "Active Subscriptions",
+      "TotalRevenue": "Total Revenue",
+      "StoreGrowthChart": "Store Growth Chart",
+      "RecentAdded": "Recently Added",
+      "AdminDashboardDesc": "General system growth and activity metrics"
     }
   }
 };

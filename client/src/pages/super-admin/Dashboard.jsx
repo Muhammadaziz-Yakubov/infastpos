@@ -10,8 +10,10 @@ import {
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, AreaChart, Area } from 'recharts';
 import api from '../../api/axios';
 import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -24,23 +26,23 @@ const AdminDashboard = () => {
       const { data } = await api.get('/admin/stats');
       setStats(data);
     } catch (error) {
-      toast.error('Statistikalarni yuklashda xatolik');
+      toast.error(t('LoadingError'));
     } finally {
       setLoading(false);
     }
   };
 
   const statCards = [
-    { name: 'Jami do\'konlar', value: stats?.totalStores || 0, icon: OfficeBuildingIcon, color: 'from-indigo-600 to-blue-600', shadow: 'shadow-indigo-500/30' },
-    { name: 'Faol obunalar', value: stats?.activeStores || 0, icon: CheckBadgeIcon, color: 'from-emerald-500 to-teal-500', shadow: 'shadow-emerald-500/30' },
-    { name: 'Muddati o\'tgan', value: stats?.expiredStores || 0, icon: ExclamationCircleIcon, color: 'from-rose-500 to-orange-500', shadow: 'shadow-rose-500/30' },
-    { name: 'Jami tushum', value: (stats?.totalRevenue?.toLocaleString() || 0) + ' so\'m', icon: CurrencyDollarIcon, color: 'from-amber-500 to-yellow-500', shadow: 'shadow-amber-500/30' },
+    { name: t('TotalStores') || 'Jami do\'konlar', value: stats?.totalStores || 0, icon: OfficeBuildingIcon, color: 'from-indigo-600 to-blue-600', shadow: 'shadow-indigo-500/30' },
+    { name: t('ActiveSubscriptions') || 'Faol obunalar', value: stats?.activeStores || 0, icon: CheckBadgeIcon, color: 'from-emerald-500 to-teal-500', shadow: 'shadow-emerald-500/30' },
+    { name: t('Expired') || 'Muddati o\'tgan', value: stats?.expiredStores || 0, icon: ExclamationCircleIcon, color: 'from-rose-500 to-orange-500', shadow: 'shadow-rose-500/30' },
+    { name: t('TotalRevenue') || 'Jami tushum', value: (stats?.totalRevenue?.toLocaleString() || 0) + ' ' + t('Sum'), icon: CurrencyDollarIcon, color: 'from-amber-500 to-yellow-500', shadow: 'shadow-amber-500/30' },
   ];
 
   if (loading) return (
     <div className="p-10 flex flex-col items-center justify-center space-y-4 animate-pulse">
       <div className="h-12 w-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-      <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em]">Statistikalar yuklanmoqda...</p>
+      <p className="text-[11px] font-black text-slate-400 uppercase tracking-[0.25em]">{t('Loading')}</p>
     </div>
   );
 
@@ -48,8 +50,8 @@ const AdminDashboard = () => {
     <div className="space-y-10 animate-premium">
       <div className="flex items-end justify-between">
         <div>
-          <h1 className="page-header-title">Admin Dashboard</h1>
-          <p className="page-header-desc">Tizimning umumiy o'sish va faollik ko'rsatkichlari</p>
+          <h1 className="page-header-title">{t('Dashboard')}</h1>
+          <p className="page-header-desc">{t('AdminDashboardDesc') || 'Tizimning umumiy o\'sish va faollik ko\'rsatkichlari'}</p>
         </div>
       </div>
 
@@ -72,7 +74,7 @@ const AdminDashboard = () => {
            <div className="flex items-center justify-between mb-10">
               <h2 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight flex items-center gap-3">
                 <TrendingUpIcon className="h-6 w-6 text-indigo-600" />
-                Do'konlar o'sish grafigi
+                {t('StoreGrowthChart') || 'Do\'konlar o\'sish grafigi'}
               </h2>
            </div>
            <div className="h-80">
@@ -99,7 +101,7 @@ const AdminDashboard = () => {
         </div>
 
         <div className="premium-card p-10 flex flex-col">
-          <h2 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-8">Yaqinda qo'shilganlar</h2>
+          <h2 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tight mb-8">{t('RecentAdded') || 'Yaqinda qo\'shilganlar'}</h2>
           <div className="space-y-6 flex-1">
              {stats?.recentStores?.length > 0 ? (
                stats.recentStores.map((store) => (
